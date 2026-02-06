@@ -1,0 +1,638 @@
+<!DOCTYPE html> 
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toko Digital - Produk Digital Terpercaya</title>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #1a1a1a;
+      min-height: 100vh;
+      padding: 0;
+      overflow-x: hidden;
+      color: #fff;
+    }
+
+    /* Header Sticky */
+    header {
+      background: #0f0f0f;
+      color: white;
+      padding: 15px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-left { display: flex; align-items: center; gap: 15px; }
+    .menu-icon { font-size: 24px; cursor: pointer; }
+    .header-title { font-size: 1.3em; font-weight: 600; }
+
+    .header-right { display: flex; align-items: center; gap: 15px; }
+    .search-icon, .cart-icon {
+      font-size: 24px; cursor: pointer; position: relative;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #00d9a3;
+      color: white;
+      border-radius: 50%;
+      width: 20px; height: 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: bold;
+    }
+
+    /* Profile Section */
+    .profile-section {
+      background: #212121;
+      background-image: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+      padding: 40px 20px;
+      text-align: center;
+      border-bottom: 1px solid #2a2a2a;
+    }
+
+    /* LOGO wrapper */
+    .profile-logo {
+      width: 120px; height: 120px;
+      margin: 0 auto 15px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+      border: 5px solid #2a2a2a;
+      overflow: hidden;
+    }
+
+    .profile-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .profile-username {
+      font-size: 1.4em;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 15px;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 15px;
+    }
+
+    .social-icon {
+      width: 45px; height: 45px;
+      background: #2a2a2a;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      text-decoration: none;
+      overflow: hidden; /* ✅ biar gambar ga keluar dari bulatan */
+    }
+
+    /* ✅ TAMBAHAN: logo gambar di dalam ikon sosial */
+    .social-icon img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .social-icon:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    /* Products Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px 30px;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 25px;
+      padding-bottom: 20px;
+    }
+
+    .product-card {
+      background: #212121;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: 1px solid #2a2a2a;
+    }
+
+    .product-card:active { transform: scale(0.98); }
+
+    .product-card:hover {
+      border-color: #667eea;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 160px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* FOTO PRODUK */
+    .product-image img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .product-info { padding: 15px; }
+
+    .product-name {
+      font-size: 1em;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 8px;
+      line-height: 1.3;
+      min-height: 40px;
+    }
+
+    .social-icon {
+    background: transparent;
+    border: 1px solid #444;
+}
+
+    .product-price {
+      font-size: 1.2em;
+      color: #8b9aff;
+      font-weight: bold;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.85);
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      background-color: #212121;
+      margin: 50px auto;
+      padding: 0;
+      border-radius: 20px;
+      max-width: 600px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+      animation: slideDown 0.3s ease;
+      border: 1px solid #2a2a2a;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 25px 30px;
+      border-radius: 20px 20px 0 0;
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      right: 20px; top: 20px;
+      color: white;
+      font-size: 35px;
+      font-weight: bold;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .close:hover { opacity: 0.7; }
+
+    .modal-body { padding: 30px; }
+
+    .detail-image {
+      width: 100%;
+      height: 300px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 15px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .detail-image img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 15px;
+    }
+
+    .detail-price {
+      font-size: 2em;
+      color: #8b9aff;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .detail-desc {
+      color: #b0b0b0;
+      line-height: 1.8;
+      margin-bottom: 25px;
+      font-size: 1.05em;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.2em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+    }
+
+    .btn-success:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(17, 153, 142, 0.4);
+    }
+
+    /* Checkout Form */
+    .form-group { margin-bottom: 20px; }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #2a2a2a;
+      border-radius: 10px;
+      font-size: 1em;
+      transition: border-color 0.3s ease;
+      background: #1a1a1a;
+      color: #ffffff;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #667eea;
+      background: #212121;
+    }
+
+    .form-group input::placeholder { color: #666; }
+
+    .order-summary {
+      background: #1a1a1a;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #2a2a2a;
+    }
+
+    .order-summary h3 { color: #ffffff; margin-bottom: 15px; }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      color: #b0b0b0;
+      gap: 10px;
+    }
+
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.3em;
+      font-weight: bold;
+      color: #8b9aff;
+      padding-top: 15px;
+      border-top: 2px solid #2a2a2a;
+      margin-top: 10px;
+    }
+
+    footer {
+      text-align: center;
+      color: #b0b0b0;
+      padding: 30px 20px;
+      font-size: 0.9em;
+      background: #1a1a1a;
+      border-top: 1px solid #2a2a2a;
+    }
+
+    .footer-logo { font-weight: bold; color: #ffffff; margin-bottom: 5px; }
+
+    @media (max-width: 768px) {
+      .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .profile-logo { width: 100px; height: 100px; }
+      .profile-username { font-size: 1.2em; }
+      .modal-content { margin: 10px; max-width: calc(100% - 20px); }
+      .product-image { height: 140px; }
+      .product-name { font-size: 0.95em; min-height: 38px; }
+      .product-price { font-size: 1.1em; }
+    }
+
+    @media (min-width: 769px) {
+      .products-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    }
+
+    @media (min-width: 1024px) {
+      .products-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header Sticky -->
+  <header>
+    <div class="header-left">
+      <div class="menu-icon">☰</div>
+      <div class="header-title">Beranda</div>
+    </div>
+    <div class="header-right">
+      <div class="search-icon">🔍</div>
+      <div class="cart-icon">
+        🛒
+        <span class="cart-badge">0</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Profile Section -->
+  <div class="profile-section">
+    <div class="profile-logo">
+      <img src="img/logo.jpg" alt="Logo Toko" />
+    </div>
+
+    <div class="profile-username">@seputarrdigital</div>
+
+    <!-- ✅ SUDAH DIGANTI MENJADI LOGO GAMBAR -->
+    <div class="social-links">
+      <a href="https://wa.me/628123456789" target="_blank" class="social-icon" title="WhatsApp">
+        <img src="img/wa.png" alt="WhatsApp">
+      </a>
+      <a href="https://instagram.com/seputaruinar" target="_blank" class="social-icon" title="Instagram">
+        <img src="img/igg.png" alt="Instagram">
+      </a>
+      <a href="https://tiktok.com/@seputaruinar" target="_blank" class="social-icon" title="TikTok">
+        <img src="img/tt.png" alt="TikTok">
+      </a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div id="homePage">
+      <div class="products-grid" id="productsGrid"></div>
+    </div>
+
+    <!-- Modal Detail Produk -->
+    <div id="detailModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close">&times;</span>
+          <h2 id="detailName"></h2>
+        </div>
+        <div class="modal-body">
+          <div class="detail-image" id="detailImage"></div>
+          <div class="detail-price" id="detailPrice"></div>
+          <div class="detail-desc" id="detailDesc"></div>
+          <button class="btn btn-primary" onclick="goToCheckout()">Beli Sekarang</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Checkout -->
+    <div id="checkoutModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close" onclick="closeCheckout()">&times;</span>
+          <h2>Konfirmasi Pemesanan</h2>
+        </div>
+        <div class="modal-body">
+          <div class="order-summary">
+            <h3>Ringkasan Pesanan</h3>
+            <div class="summary-item">
+              <span>Produk:</span>
+              <span id="checkoutProductName"></span>
+            </div>
+            <div class="summary-total">
+              <span>Total Harga:</span>
+              <span id="checkoutPrice"></span>
+            </div>
+          </div>
+
+          <form id="checkoutForm">
+            <div class="form-group">
+              <label for="customerPhone">Nomor WhatsApp *</label>
+              <input type="tel" id="customerPhone" placeholder="Contoh: 08123456789" required pattern="[0-9]+" />
+            </div>
+
+            <div class="form-group">
+              <label for="customerName">Nama Lengkap (Opsional)</label>
+              <input type="text" id="customerName" placeholder="Masukkan nama Anda" />
+            </div>
+
+            <button type="submit" class="btn btn-success">📱 Konfirmasi via WhatsApp</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-logo">Seputarr Digital</div>
+      <p>&copy; 2024 Toko Digital. Semua hak dilindungi.</p>
+    </footer>
+  </div>
+
+  <script>
+    // KONFIGURASI - GANTI DENGAN NOMOR WHATSAPP ANDA
+    const WHATSAPP_NUMBER = '6282162472686'; // format: 628xxx
+
+    // Data Produk (PAKAI FOTO)
+    // Taruh gambar di folder img/
+    const products = [
+      {
+        id: 1,
+        name: 'CANVA PRO 1 BULAN',
+        price: 3000,
+        image: 'img/canva.png',
+        fullDesc: 'Dapatkan akses penuh ke Canva Pro selama 1 bulan. Nikmati semua fitur premium termasuk template unlimited, background remover, brand kit, dan masih banyak lagi.'
+      },
+      {
+        id: 2,
+        name: 'CANVA PRO 1 TAHUN',
+        price: 15000,
+        image: 'img/canva.png',
+        fullDesc: 'Hemat lebih banyak dengan paket tahunan! Akses penuh Canva Pro selama 12 bulan dengan semua fitur premium.'
+      },
+      {
+        id: 3,
+        name: 'CAPCUT PRO 1 BULAN',
+        price: 15000,
+        image: 'img/capcut.jpg',
+        fullDesc: 'Akses CapCut Pro: fitur premium, export lebih lengkap, dan pengalaman edit lebih nyaman.'
+      },
+      {
+        id: 4,
+        name: 'CHATGPT 1 BULAN',
+        price: 20000,
+        image: 'img/chatgpt.png',
+        fullDesc: 'Akses ChatGPT Plus selama 1 bulan. Dapatkan akses ke model terbaru, fitur premium, dan respons lebih cepat.'
+      },
+    ];
+
+    let selectedProduct = null;
+
+    function formatRupiah(number) {
+      return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0
+      }).format(number);
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById('productsGrid');
+      grid.innerHTML = products.map(product => `
+        <div class="product-card" onclick="showDetail(${product.id})">
+          <div class="product-image">
+            <img src="${product.image}" alt="${product.name}">
+          </div>
+          <div class="product-info">
+            <div class="product-name">${product.name}</div>
+            <div class="product-price">${formatRupiah(product.price)}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function showDetail(productId) {
+      selectedProduct = products.find(p => p.id === productId);
+      if (!selectedProduct) return;
+
+      document.getElementById('detailName').textContent = selectedProduct.name;
+      document.getElementById('detailImage').innerHTML = `<img src="${selectedProduct.image}" alt="${selectedProduct.name}">`;
+      document.getElementById('detailPrice').textContent = formatRupiah(selectedProduct.price);
+      document.getElementById('detailDesc').textContent = selectedProduct.fullDesc;
+
+      document.getElementById('detailModal').style.display = 'block';
+    }
+
+    function goToCheckout() {
+      if (!selectedProduct) return;
+
+      document.getElementById('checkoutProductName').textContent = selectedProduct.name;
+      document.getElementById('checkoutPrice').textContent = formatRupiah(selectedProduct.price);
+
+      document.getElementById('detailModal').style.display = 'none';
+      document.getElementById('checkoutModal').style.display = 'block';
+    }
+
+    function closeCheckout() {
+      document.getElementById('checkoutModal').style.display = 'none';
+      document.getElementById('checkoutForm').reset();
+    }
+
+    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const phone = document.getElementById('customerPhone').value;
+      const name = document.getElementById('customerName').value || 'Pelanggan';
+
+      const message = `Halo, saya ingin memesan produk berikut:
+
+*DETAIL PESANAN*
+────────────────
+👤 Nama: ${name}
+📱 No. HP: ${phone}
+
+🛍️ Produk: ${selectedProduct.name}
+💰 Harga: ${formatRupiah(selectedProduct.price)}
+
+────────────────
+*TOTAL: ${formatRupiah(selectedProduct.price)}*
+
+Mohon konfirmasi untuk melanjutkan pembayaran. Terima kasih! 🙏`;
+
+      const encodedMessage = encodeURIComponent(message);
+      const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+
+      window.open(waLink, '_blank');
+
+      setTimeout(() => {
+        closeCheckout();
+        document.getElementById('detailModal').style.display = 'none';
+        alert('Terima kasih! Anda akan diarahkan ke WhatsApp untuk konfirmasi pesanan.');
+      }, 500);
+    });
+
+    document.querySelectorAll('.close').forEach(closeBtn => {
+      closeBtn.onclick = function() {
+        this.closest('.modal').style.display = 'none';
+      }
+    });
+
+    window.onclick = function(event) {
+      if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+      }
+    }
+
+    renderProducts();
+  </script>
+</body>
+</html>
